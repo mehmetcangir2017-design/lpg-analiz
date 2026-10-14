@@ -51,7 +51,7 @@ interface YakitDao {
     suspend fun aracKaydet(arac: AracProfili)
 }
 
-@Database(entities = [YakitKaydi::class, AracProfili::class], version = 1, exportSchema = false)
+@Database(entities = [YakitKaydi::class, AracProfili::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun dao(): YakitDao
 
@@ -59,12 +59,19 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var instance: AppDatabase? = null
 
+        /** v1 -> v2: arac tablosuna depoLitre (LPG depo hacmi) sütunu ekler. */
+        private val GECIS_1_2 = object : androidx.room.migration.Migration(1, 2) {
+            override fun migrate(db: androidx.sqlite.db.SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE arac ADD COLUMN depoLitre REAL NOT NULL DEFAULT 37.0")
+            }
+        }
+
         fun get(context: Context): AppDatabase = instance ?: synchronized(this) {
             instance ?: Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
                 "lpg_analiz.db"
-            ).fallbackToDestructiveMigration().build().also { instance = it }
+            ).addMigrations(GECIS_1_2).fallbackToDestructiveMigration().build().also { instance = it }
         }
     }
 }

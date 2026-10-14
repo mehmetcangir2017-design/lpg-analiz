@@ -61,17 +61,18 @@ private object Rotalar {
 private fun Uygulama(vm: AppViewModel, aracBasligi: String) {
     val nav = rememberNavController()
     val kayitlar by vm.kayitlar.collectAsStateWithLifecycle()
+    val aracProfili by vm.arac.collectAsStateWithLifecycle()
     var anaKm by remember { mutableStateOf("") }
 
-    val ozet = remember(kayitlar) { LpgAnaliz.genelOzet(kayitlar) }
+    val depoLitre = aracProfili?.depoLitre?.takeIf { it > 0 } ?: 37.0
+    val ozet = remember(kayitlar, depoLitre) { LpgAnaliz.genelOzet(kayitlar, depoLitre) }
 
     NavHost(navController = nav, startDestination = Rotalar.ANA) {
         composable(Rotalar.ANA) {
             AnaEkran(
                 aracBasligi = aracBasligi,
-                kayitlarSayi = kayitlar.size,
-                sonKm = kayitlar.maxByOrNull { it.km }?.km,
-                sonOrtalama = ozet?.ortalamaYuzKm?.takeIf { kayitlar.size >= 2 },
+                kayitlar = kayitlar,
+                depoLitre = depoLitre,
                 fisEkraniAc = { nav.navigate(Rotalar.KAYIT) },
                 analizAc = { nav.navigate(Rotalar.ANALIZ) },
                 gecmisAc = { nav.navigate(Rotalar.GECMIS) },
@@ -90,7 +91,7 @@ private fun Uygulama(vm: AppViewModel, aracBasligi: String) {
             )
         }
         composable(Rotalar.ANALIZ) {
-            AnalizEkrani(vm = vm, kayitlar = kayitlar, geri = { nav.popBackStack() })
+            AnalizEkrani(vm = vm, kayitlar = kayitlar, depoLitre = depoLitre, geri = { nav.popBackStack() })
         }
         composable(Rotalar.GECMIS) {
             GecmisEkrani(vm = vm, geri = { nav.popBackStack() })

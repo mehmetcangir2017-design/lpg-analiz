@@ -108,7 +108,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private fun bicimle(d: Double): String = String.format(java.util.Locale("tr", "TR"), "%.2f", d)
 
     /** Yeni kaydı kaydeder. Basit doğrulama yapar. */
-    fun kaydet(km: String, tamDepo: Boolean, fisYolu: String?, notlar: String): Boolean {
+    fun kaydet(km: String, tamDepo: Boolean, fisYolu: String?, notlar: String, depoLitre: Double = 37.0): Boolean {
         val kmDegeri = km.trim().toIntOrNull()
         val litre = FisAyristirici.sayiOku(_fis.value.litre.replace(" ", ""))
         val tutar = FisAyristirici.sayiOku(_fis.value.tutar.replace(" ", "")) ?: 0.0
@@ -118,6 +118,13 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
         if (litre == null || litre <= 0) {
             _fis.value = _fis.value.copy(hata = "Alınan litre miktarını girin (fişten okunamadıysa elle yazın).")
+            return false
+        }
+        val depo = depoLitre.takeIf { it > 0 } ?: 37.0
+        if (litre > depo + 1.0) {
+            _fis.value = _fis.value.copy(
+                hata = "Girilen litre (${bicimle(litre)} L) depo hacminden (${bicimle(depo)} L) büyük. Değeri kontrol edin."
+            )
             return false
         }
         viewModelScope.launch {

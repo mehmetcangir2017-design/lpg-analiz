@@ -49,11 +49,12 @@ import java.util.Locale
 fun AnalizEkrani(
     vm: AppViewModel,
     kayitlar: List<YakitKaydi>,
+    depoLitre: Double,
     geri: () -> Unit
 ) {
     val tr = Locale("tr", "TR")
     val sirali = kayitlar.sortedBy { it.km }
-    val ozet = LpgAnaliz.genelOzet(sirali)
+    val ozet = LpgAnaliz.genelOzet(sirali, depoLitre)
     val araliklar = LpgAnaliz.araliklar(sirali)
     val aylik = LpgAnaliz.aylikOzet(sirali)
 
@@ -142,9 +143,9 @@ fun AnalizEkrani(
                     modifier = Modifier.weight(1f)
                 )
                 OzetKarti(
-                    baslik = "Bir depoyla",
-                    deger = "≈ %.0f km".format(tr, ozet.tahminiMenzil),
-                    altYazi = "ort. %.1f L/tam dolum".format(tr, ozet.ortalamaDepoLitre),
+                    baslik = "Tam depo menzili",
+                    deger = "≈ %.0f km".format(tr, ozet.depoMenzili),
+                    altYazi = "depo %.0f L".format(tr, depoLitre),
                     modifier = Modifier.weight(1f)
                 )
             }

@@ -42,28 +42,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.murat.lpganaliz.analiz.LpgAnaliz
+import com.murat.lpganaliz.data.YakitKaydi
 import com.murat.lpganaliz.ui.OzetKarti
 import com.murat.lpganaliz.ui.km
+import com.murat.lpganaliz.ui.litre
 import com.murat.lpganaliz.ui.sayi
 import kotlinx.coroutines.launch
+
+private val TR_YEREL = java.util.Locale("tr", "TR")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnaEkran(
     aracBasligi: String,
-    kayitlarSayi: Int,
-    sonKm: Int?,
-    sonOrtalama: Double?,
+    kayitlar: List<YakitKaydi>,
+    depoLitre: Double,
     fisEkraniAc: () -> Unit,
     analizAc: () -> Unit,
     gecmisAc: () -> Unit,
     ayarlarAc: () -> Unit
 ) {
+    val kayitlarSayi = kayitlar.size
+    val sonKm = kayitlar.maxByOrNull { it.km }?.km
+    val ozet = remember(kayitlar, depoLitre) { LpgAnaliz.genelOzet(kayitlar, depoLitre) }
+    val sonOrtalama = ozet?.ortalamaYuzKm?.takeIf { kayitlarSayi >= 2 }
     var kmMetni by remember { mutableStateOf("") }
     val kapsam = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
 
     val girilenKm = kmMetni.toIntOrNull()
+
+    // Son kayda göre depo tahmini (km girilmediyse son kayıt baz alınır).
+    val sonDepoDurumu = remember(kayitlar, sonKm, depoLitre) {
+        if (sonKm != null && kayitlar.isNotEmpty()) LpgAnaliz.depoDurumu(kayitlar, sonKm, depoLitre)
+        else null
+    }
+    // Girilen km'ye göre canlı depo tahmini.
+    val girilenDepoDurumu = girilenKm?.takeIf { it > 0 && kayitlar.isNotEmpty() }?.let {
+        remember(kayitlar, it, depoLitre) { LpgAnaliz.depoDurumu(kayitlar, it, depoLitre) }
+    }
 
     Scaffold(
         topBar = {
@@ -179,6 +197,43 @@ fun AnaEkran(
                 )
             }
 
+            // Canlı / son depo durumu kartı
+            val gosterilen = girilenDepoDurumu ?: sonDepoDurumu
+            if (gosterilen != null) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                ) {
+                    Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text("Depo durumu (tahmini)", style = MaterialTheme.typography.labelMedium)
+                        if (gosterilen.guvenilir) {
+                            Text(
+                                "≈ ${gosterilen.kalanLitre.sayi(1)} · ≈ ${"%.0f".format(TR_YEREL, gosterilen.kalanMenzil)} km gider",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Text(
+                                "Depo ${depoLitre.sayi(0)} L · son dolumdan beri ${gosterilen.gidilenKm.km()}",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            if (gosterilen.kalanMenzil < 80) {
+                                Text(
+                                    "⚠ Depo bitmek üzere — yakın zamanda dolum yapın.",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                        } else {
+                            Text(
+                                "2. fişten sonra burada kalan LPG tahminin görünür (depo ${depoLitre.sayi(0)} L).",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+            }
+
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
                 Button(onClick = analizAc, modifier = Modifier.weight(1f)) { Text("Analiz & Grafikler") }
                 OutlinedButton(onClick = gecmisAc, modifier = Modifier.weight(1f)) { Text("Geçmiş Fişler") }
@@ -195,7 +250,7 @@ fun AnaEkran(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        "Tüketim, iki dolum arasındaki mesafeye göre hesaplanır. En doğru sonuç için depoyu her seferinde tam doldur.",
+                        "Tüketim, iki dolum arasındaki mesafeye göre hesaplanır. En doğru sonuç için depoyu her seferinde tam doldur (${depoLitre.sayi(0)} L).",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

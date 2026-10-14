@@ -50,6 +50,7 @@ fun AyarlarEkrani(vm: AppViewModel, geri: () -> Unit) {
     var yil by remember { mutableStateOf("") }
     var motor by remember { mutableStateOf("") }
     var beygir by remember { mutableStateOf("") }
+    var depoLitre by remember { mutableStateOf("") }
     var baslangicKm by remember { mutableStateOf("") }
     var silmeOnay by remember { mutableStateOf(false) }
 
@@ -60,6 +61,7 @@ fun AyarlarEkrani(vm: AppViewModel, geri: () -> Unit) {
             yil = it.yil.toString()
             motor = it.motorHacmi
             beygir = it.beygir.toString()
+            depoLitre = it.depoLitre.toString()
             baslangicKm = it.baslangicKm.toString()
         }
     }
@@ -110,6 +112,17 @@ fun AyarlarEkrani(vm: AppViewModel, geri: () -> Unit) {
                         singleLine = true, modifier = Modifier.fillMaxWidth()
                     )
                     OutlinedTextField(
+                        depoLitre, { depoLitre = it.filter { c -> c.isDigit() || c == '.' || c == ',' }.take(5) },
+                        label = { Text("LPG depo hacmi (litre)") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        singleLine = true, modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        "Depo hacmi menzil ve depo durumu tahminlerinde kullanılır (sizinki: 37 litre).",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    OutlinedTextField(
                         baslangicKm, { baslangicKm = it.filter { c -> c.isDigit() }.take(7) },
                         label = { Text("Başlangıç km (LPG takıldığı andaki km)") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -129,7 +142,9 @@ fun AyarlarEkrani(vm: AppViewModel, geri: () -> Unit) {
                                     yil = yil.toIntOrNull() ?: 2011,
                                     motorHacmi = motor.ifBlank { "1.6" },
                                     beygir = beygir.toIntOrNull() ?: 132,
-                                    baslangicKm = baslangicKm.toIntOrNull() ?: 0
+                                    baslangicKm = baslangicKm.toIntOrNull() ?: 0,
+                                    depoLitre = com.murat.lpganaliz.ocr.FisAyristirici
+                                        .sayiOku(depoLitre.replace(" ", ""))?.takeIf { it > 0 } ?: 37.0
                                 )
                             )
                         },

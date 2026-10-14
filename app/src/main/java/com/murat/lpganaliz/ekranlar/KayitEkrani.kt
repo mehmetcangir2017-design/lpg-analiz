@@ -43,6 +43,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.murat.lpganaliz.AppViewModel
 import com.murat.lpganaliz.ui.ddMMMMyyyy
@@ -64,6 +65,8 @@ fun KayitEkrani(
 ) {
     val durum by vm.fis.collectAsState()
     val uygulamaBaglami = LocalContext.current
+    val depoLitreState by vm.arac.collectAsStateWithLifecycle()
+    val depoLitre = depoLitreState?.depoLitre?.takeIf { it > 0 } ?: 37.0
     var km by remember { mutableStateOf(anaKm) }
     var tamDepo by remember { mutableStateOf(true) }
     var notlar by remember { mutableStateOf("") }
@@ -230,7 +233,7 @@ fun KayitEkrani(
 
             Button(
                 onClick = {
-                    val basarili = vm.kaydet(km, tamDepo, durum.fisYolu, notlar)
+                    val basarili = vm.kaydet(km, tamDepo, durum.fisYolu, notlar, depoLitre)
                     if (basarili) kaydedildi()
                 },
                 modifier = Modifier.fillMaxWidth()

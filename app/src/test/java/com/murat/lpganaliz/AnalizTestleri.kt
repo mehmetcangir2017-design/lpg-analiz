@@ -93,4 +93,37 @@ class LpgAnalizTest {
         assertEquals(400, t.first)
         assertEquals(10.0, t.third, 0.001) // 40*100/400
     }
+
+    @Test
+    fun depoMenzili37LitreIle() {
+        val kayitlar = listOf(
+            kayit(100_000, 30.0, 600.0, 0),
+            kayit(100_500, 40.0, 800.0, 10),
+            kayit(101_000, 35.0, 700.0, 20)
+        )
+        // Ortalama tüketim 7.5 L/100km -> 37 L depo ile ~493 km
+        val o = LpgAnaliz.genelOzet(kayitlar, 37.0)!!
+        assertEquals(37.0 * 100.0 / 7.5, o.depoMenzili, 0.01)
+    }
+
+    @Test
+    fun depoDurumuTahmini() {
+        val kayitlar = listOf(
+            kayit(100_000, 30.0, 600.0, 0),
+            kayit(100_500, 40.0, 800.0, 10)
+        )
+        // Son dolum 100.500'te, 100.700'de bakılıyor: 200 km x 8 L/100km = 16 L yakılmış
+        val d = LpgAnaliz.depoDurumu(kayitlar, 100_700, 37.0)!!
+        assertEquals(200, d.gidilenKm)
+        assertEquals(16.0, d.yakilanLitre, 0.01)
+        assertEquals(21.0, d.kalanLitre, 0.01)
+        assertEquals(21.0 * 100.0 / 8.0, d.kalanMenzil, 0.01)
+        assertTrue(d.guvenilir)
+    }
+
+    @Test
+    fun tekKayittaDepoDurumuGuvenilmez() {
+        val d = LpgAnaliz.depoDurumu(listOf(kayit(100_000, 30.0, 600.0, 0)), 100_100, 37.0)!!
+        assertTrue(!d.guvenilir)
+    }
 }

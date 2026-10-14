@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
  * @param fisYolu      Çekilen fiş fotoğrafının dosya yolu (opsiyonel).
  * @param ocrMetni     OCR ile okunan ham metin (opsiyonel, hata ayıklama için).
  * @param tamDepo      Deponun tamamen doldurulup doldurulmadığı (tüketim hesabı için).
- * @param aracLpg      Alım anındaki araç LPG durumu (benzin modunda kullanıldı vb. istisnalar için not).
+ * @param notlar       Serbest not alanı.
  */
 @Entity(tableName = "yakit_kayitlari")
 data class YakitKaydi(
@@ -42,5 +42,7 @@ data class AracProfili(
     val yil: Int = 2011,
     val motorHacmi: String = "1.6",
     val beygir: Int = 132,
-    val baslangicKm: Int = 0
+    val baslangicKm: Int = 0,
+    /** LPG depo hacmi (litre). Menzil ve depo durumu tahminlerinde kullanılır. */
+    val depoLitre: Double = 37.0
 )
