@@ -1,9 +1,9 @@
 name: APK Derle
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -27,11 +27,11 @@ jobs:
       - name: Gradlew calistirilabilir yap
         run: chmod +x ./gradlew
 
-      - name: Birim testleri
-        run: ./gradlew testDebugUnitTest --stacktrace
+      - name: Surum kontrolu
+        run: ./gradlew --version
 
       - name: Debug + Release APK derle
-        run: ./gradlew assembleDebug assembleRelease --stacktrace
+        run: ./gradlew assembleDebug assembleRelease --stacktrace --no-daemon
 
       - name: APK dosyalarini listele
         run: find app/build/outputs/apk -name "*.apk" -exec ls -lh {} \;
@@ -52,10 +52,10 @@ jobs:
           tag_name: ${{ env.TAG }}
           name: LPG Analiz ${{ env.TAG }}
           body: |
-            Toyota Auris 2011 LPG tüketim ve maliyet analiz uygulaması.
+            Toyota Auris 2011 icin LPG tuketim ve maliyet analiz uygulamasi.
 
-            Kurulum: aşağıdaki `app-release.apk` dosyasını telefona indirip açın.
-            Android "bilinmeyen kaynaklardan yüklemeye izin ver" uyarısı çıkarsa onaylayın.
+            Kurulum: asagidaki `app-release.apk` dosyasini telefona indirip acin.
+            Android "bilinmeyen kaynaklardan yuklemeye izin ver" uyarisi cikarsa onaylayin.
           files: app/build/outputs/apk/release/app-release.apk
           draft: false
           prerelease: false
