@@ -1,7 +1,7 @@
-&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;resources&gt;
-    &lt;style name="Theme.LpgAnaliz" parent="android:Theme.Material.NoActionBar"&gt;
-        &lt;item name="android:statusBarColor"&gt;#0B3D2E&lt;/item&gt;
-        &lt;item name="android:windowBackground"&gt;#FFFBFE&lt;/item&gt;
-    &lt;/style&gt;
-&lt;/resources&gt;
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.LpgAnaliz" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">#0B3D2E</item>
+        <item name="android:windowBackground">#FFFBFE</item>
+    </style>
+</resources>

@@ -1,4 +1,4 @@
-&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;resources&gt;
-    &lt;string name="app_name"&gt;LPG Analiz&lt;/string&gt;
-&lt;/resources&gt;
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LPG Analiz</string>
+</resources>

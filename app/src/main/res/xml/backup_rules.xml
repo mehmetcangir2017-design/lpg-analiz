@@ -1,4 +1,4 @@
-&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;full-backup-content&gt;
-    &lt;include domain="database" path="." /&gt;
-&lt;/full-backup-content&gt;
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <include domain="database" path="." />
+</full-backup-content>

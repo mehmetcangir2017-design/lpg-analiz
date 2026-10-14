@@ -1,4 +1,4 @@
-&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;resources&gt;
-    &lt;color name="ic_launcher_background"&gt;#0B3D2E&lt;/color&gt;
-&lt;/resources&gt;
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#0B3D2E</color>
+</resources>
