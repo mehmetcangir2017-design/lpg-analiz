@@ -9,7 +9,8 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 /**
- * Fiş fotoğrafını ML Kit (Türkçe/Latin alfabesi) ile okur.
+ * Fiş fotoğrafını ML Kit (Latin alfabesi; Türkçe karakter desteği dahil) ile okur.
+ * Model cihazın içinde çalışır, internet gerekmez.
  */
 object FisOkuyucu {
 
@@ -23,7 +24,7 @@ object FisOkuyucu {
         suspendCancellableCoroutine { cont ->
             recognizer.process(image)
                 .addOnSuccessListener { visionText -> cont.resume(visionText.text) }
-                .addOnFailureListener { e -> cont.resume("") }
+                .addOnFailureListener { cont.resume("") }
         }
     }
 }

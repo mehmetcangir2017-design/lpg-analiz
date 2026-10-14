@@ -71,7 +71,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    implementation(libs.mlkit.text.recognition.turkish)
+    implementation(libs.mlkit.text.recognition)
 
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.camera2)
