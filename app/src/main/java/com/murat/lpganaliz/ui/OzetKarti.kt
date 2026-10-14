@@ -1,4 +1,4 @@
-package com.murat.lpganaliz
+package com.murat.lpganaliz.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

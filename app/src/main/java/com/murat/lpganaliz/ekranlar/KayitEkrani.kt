@@ -63,6 +63,7 @@ fun KayitEkrani(
     kaydedildi: () -> Unit
 ) {
     val durum by vm.fis.collectAsState()
+    val uygulamaBaglami = LocalContext.current
     var km by remember { mutableStateOf(anaKm) }
     var tamDepo by remember { mutableStateOf(true) }
     var notlar by remember { mutableStateOf("") }
@@ -260,11 +261,11 @@ fun KayitEkrani(
         }
     }
 
-    if (kameraAcik) {
+        if (kameraAcik) {
         com.murat.lpganaliz.kamera.FisCekmeEkrani(
             onKapat = { kameraAcik = false },
             cekilenFis = { uri ->
-                vm.fisGorselAyarla(uri, LocalContext.current)
+                vm.fisGorselAyarla(uri, uygulamaBaglami)
                 kameraAcik = false
             }
         )

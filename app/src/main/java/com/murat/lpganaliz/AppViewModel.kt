@@ -40,6 +40,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         val tutar: String = "",
         val istasyon: String = "",
         val tarih: Long = System.currentTimeMillis(),
+        val fisYolu: String? = null,
         val ocrUygulandi: Boolean = false
     )
 
