@@ -1,0 +1,61 @@
+name: APK Derle
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+
+      - name: JDK 17 kur
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Gradle kur
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Gradlew calistirilabilir yap
+        run: chmod +x ./gradlew
+
+      - name: Birim testleri
+        run: ./gradlew testDebugUnitTest --stacktrace
+
+      - name: Debug + Release APK derle
+        run: ./gradlew assembleDebug assembleRelease --stacktrace
+
+      - name: APK dosyalarini listele
+        run: find app/build/outputs/apk -name "*.apk" -exec ls -lh {} \;
+
+      - name: APK'lari artifact olarak yukle
+        uses: actions/upload-artifact@v4
+        with:
+          name: LPG-Analiz-APK
+          path: app/build/outputs/apk/**/*.apk
+          if-no-files-found: error
+
+      - name: Surum etiketi olustur
+        run: echo "TAG=v1.0.${{ github.run_number }}" >> $GITHUB_ENV
+
+      - name: Release olustur ve APK yukle
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: LPG Analiz ${{ env.TAG }}
+          body: |
+            Toyota Auris 2011 LPG tüketim ve maliyet analiz uygulaması.
+
+            Kurulum: aşağıdaki `app-release.apk` dosyasını telefona indirip açın.
+            Android "bilinmeyen kaynaklardan yüklemeye izin ver" uyarısı çıkarsa onaylayın.
+          files: app/build/outputs/apk/release/app-release.apk
+          draft: false
+          prerelease: false

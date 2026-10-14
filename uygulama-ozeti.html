@@ -1,0 +1,117 @@
+&lt;!doctype html&gt;
+&lt;html lang="tr"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+&lt;title&gt;LPG Analiz — Uygulama Durumu&lt;/title&gt;
+&lt;style&gt;
+  :root{
+    --yesil:#0B3D2E; --yesil2:#12664B; --amber:#F2A93B; --bg:#F5F9F6; --kart:#ffffff;
+    --metin:#10221B; --soluk:#5B6E66; --cizgi:#DCE7E0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+       background:var(--bg);color:var(--metin)}
+  header{background:linear-gradient(135deg,var(--yesil),var(--yesil2));color:#fff;padding:34px 22px 28px}
+  header h1{margin:0 0 6px;font-size:26px;letter-spacing:-.3px}
+  header p{margin:0;opacity:.85;font-size:14px}
+  .rozet{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);
+         padding:4px 10px;border-radius:999px;font-size:12px;margin-top:14px}
+  main{max-width:900px;margin:0 auto;padding:22px}
+  .kart{background:var(--kart);border:1px solid var(--cizgi);border-radius:14px;padding:18px;margin-bottom:16px}
+  h2{font-size:17px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+  h2 .n{background:var(--yesil);color:#fff;width:24px;height:24px;border-radius:7px;
+        display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+  ul{margin:0;padding-left:20px}
+  li{margin-bottom:6px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--cizgi)}
+  th{color:var(--soluk);font-weight:600;font-size:12.5px}
+  code{background:#EEF4F0;padding:2px 6px;border-radius:5px;font-size:13px}
+  .durum{display:inline-block;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px}
+  .bitti{background:#D8F0E2;color:#0B5D38}
+  .devam{background:#FFF2D8;color:#8A5A00}
+  .sira{background:#E6EAF2;color:#3A4A66}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+  .olcu{background:#F0F6F2;border-radius:10px;padding:12px}
+  .olcu b{display:block;font-size:20px;color:var(--yesil)}
+  .olcu span{font-size:12.5px;color:var(--soluk)}
+  footer{text-align:center;color:var(--soluk);font-size:13px;padding:10px 22px 40px}
+</style>
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;h1&gt;LPG Analiz — Android Uygulaması&lt;/h1&gt;
+  &lt;p&gt;Toyota Auris 2011 · 1.6 · 132 HP · Fiş fotoğrafından otomatik LPG analizi&lt;/p&gt;
+  &lt;span class="rozet"&gt;Kaynak kod hazır · APK derlemesi sırada&lt;/span&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+
+  &lt;div class="kart"&gt;
+    &lt;h2&gt;&lt;span class="n"&gt;✓&lt;/span&gt; Uygulama ne yapıyor?&lt;/h2&gt;
+    &lt;div class="grid"&gt;
+      &lt;div class="olcu"&gt;&lt;b&gt;1&lt;/b&gt;&lt;span&gt;Pompada ana km göstergesini gir&lt;/span&gt;&lt;/div&gt;
+      &lt;div class="olcu"&gt;&lt;b&gt;2&lt;/b&gt;&lt;span&gt;Fişi kamerayla çek — litre ve tutar otomatik okunur&lt;/span&gt;&lt;/div&gt;
+      &lt;div class="olcu"&gt;&lt;b&gt;3&lt;/b&gt;&lt;span&gt;İkinci fişten sonra tüketim ve grafikler çıkar&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="kart"&gt;
+    &lt;h2&gt;&lt;span class="n"&gt;⚙&lt;/span&gt; Teknik yapı&lt;/h2&gt;
+    &lt;table&gt;
+      &lt;tr&gt;&lt;th&gt;Katman&lt;/th&gt;&lt;th&gt;Seçim&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Dil / arayüz&lt;/td&gt;&lt;td&gt;Kotlin + Jetpack Compose (Material 3)&lt;/td&gt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Veri&lt;/td&gt;&lt;td&gt;Room veritabanı, cihazda — internet gerekmez&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Fiş okuma (OCR)&lt;/td&gt;&lt;td&gt;Google ML Kit, Türkçe model — çevrimdışı&lt;/td&gt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Kamera&lt;/td&gt;&lt;td&gt;CameraX&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Hedef&lt;/td&gt;&lt;td&gt;Android 6.0 ve üzeri (minSdk 23)&lt;/td&gt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Analiz&lt;/td&gt;&lt;td&gt;İki dolum arası km farkı üzerinden L/100 km ve ₺/km&lt;/td&gt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+
+  &lt;div class="kart"&gt;
+    &lt;h2&gt;&lt;span class="n"&gt;📊&lt;/span&gt; Göreceğiniz analizler&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;b&gt;Ortalama tüketim&lt;/b&gt; — L/100 km, en iyi / en kötü değer&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Km başı maliyet&lt;/b&gt; — ₺/km ve toplam harcama&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Fiş bazında tüketim grafiği&lt;/b&gt; — sütun/çizgi grafik, noktaya dokununca o fişin değeri&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;LPG litre fiyatı değişimi&lt;/b&gt; — pompa fiyatı zaman içinde nasıl değişmiş&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Aylık tüketim ve harcama grafikleri&lt;/b&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Bir depoyla tahmini menzil&lt;/b&gt; ve günlük ortalama yol&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Geçmiş fişler&lt;/b&gt; — fiş fotoğrafı, litre, tutar, istasyon; düzeltme ve silme&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+
+  &lt;div class="kart"&gt;
+    &lt;h2&gt;&lt;span class="n"&gt;✓&lt;/span&gt; Şu ana kadar tamamlananlar&lt;/h2&gt;
+    &lt;table&gt;
+      &lt;tr&gt;&lt;th&gt;Parça&lt;/th&gt;&lt;th&gt;Durum&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Gradle proje altyapısı, imzalama anahtarı, Gradle wrapper&lt;/td&gt;&lt;td&gt;&lt;span class="durum bitti"&gt;tamam&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Veri katmanı (Room: yakıt kayıtları + araç profili)&lt;/td&gt;&lt;td&gt;&lt;span class="durum bitti"&gt;tamam&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Fiş OCR ve ayrıştırma (litre/tutar/tarih/istasyon)&lt;/td&gt;&lt;td&gt;&lt;span class="durum bitti"&gt;tamam&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Analiz motoru (L/100 km, ₺/km, aylık özet, menzil)&lt;/td&gt;&lt;td&gt;&lt;span class="durum bitti"&gt;tamam&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;5 ekran: Ana · Fiş Kaydet · Analiz &amp; Grafikler · Geçmiş · Ayarlar&lt;/td&gt;&lt;td&gt;&lt;span class="durum bitti"&gt;tamam&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Kamera ile fiş çekme (CameraX) + özel grafik bileşenleri&lt;/td&gt;&lt;td&gt;&lt;span class="durum bitti"&gt;tamam&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Birim testleri (fiş ayrıştırma + analiz hesabı)&lt;/td&gt;&lt;td&gt;&lt;span class="durum bitti"&gt;tamam&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;GitHub deposuna yükleme ve otomatik APK derleme&lt;/td&gt;&lt;td&gt;&lt;span class="durum devam"&gt;şimdi yapılıyor&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Kuruluma hazır APK indirme bağlantısı&lt;/td&gt;&lt;td&gt;&lt;span class="durum sira"&gt;derleme sonrası&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+
+  &lt;div class="kart"&gt;
+    &lt;h2&gt;&lt;span class="n"&gt;🧮&lt;/span&gt; Tüketim nasıl hesaplanıyor?&lt;/h2&gt;
+    &lt;p style="margin:0 0 10px;color:var(--soluk);font-size:14.5px"&gt;
+      Ardışık iki fiş arasındaki km farkı, ikinci fişte alınan litre ile kapatılmış sayılır (tam dolum / tank-to-tank yöntemi).
+      Bu yüzden her seferinde depoyu tam doldurmak en doğru sonucu verir.
+    &lt;/p&gt;
+    &lt;p style="margin:0;font-size:14.5px"&gt;
+      Örnek: 100.000 km'de 30 L aldınız, 100.500 km'de 40 L aldınız →
+      500 km'de 40 L yakılmış → &lt;b&gt;8,00 L/100 km&lt;/b&gt;.
+    &lt;/p&gt;
+  &lt;/div&gt;
+
+&lt;/main&gt;
+&lt;footer&gt;LPG Analiz 1.0 · Kişisel kullanım · Veriler yalnızca telefonda saklanır&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
